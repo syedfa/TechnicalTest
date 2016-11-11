@@ -21,16 +21,32 @@ class TechnicalTestTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
             // Put the code you want to measure the time of here.
         }
+    }
+    
+    func testLaunchable() {
+        XCTAssertTrue(true)
+    }
+    
+    func testConnection() {
+        let reachablilityExpectation = expectation(description: "reachability")
+        
+        if let url = URL(string: "https://api-server.essenceprototyping.com:999/photos/search/?searchString") {
+            let task = URLSession.shared.dataTask(with: url, completionHandler: { (url: Data?, response: URLResponse?, error: Error?) in
+                
+                if error == nil {
+                    reachablilityExpectation.fulfill()
+                }
+                
+            })
+            task.resume()
+        }
+        
+        waitForExpectations(timeout: 5.0, handler: nil)
     }
     
 }
